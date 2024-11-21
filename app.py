@@ -17,7 +17,7 @@ def index():
 
 @app.route('/etusivu')
 def etusivu():
-    sql = "SELECT id, name, created_at FROM restaurants ORDER BY id DESC"
+    sql = "SELECT id, name, created_at, stars_average FROM restaurants ORDER BY id DESC"
     result = db.session.execute(text(sql))
     restaurants = result.fetchall()
     return render_template("etusivu.html", restaurants=restaurants)
@@ -58,6 +58,7 @@ def review(id):
 
 @app.route("/maker", methods=["POST"])
 def maker():
+    lista = []
     review_id = request.form['id']
     teksti = request.form["teksti"]
     stars = request.form["stars"]
@@ -68,7 +69,32 @@ def maker():
     sql = "INSERT INTO reviews (restaurant_id, user_id, comment, stars, made_at) VALUES (:id, :user_id, :text, :stars, NOW())"
     db.session.execute(text(sql), {"id":review_id, "user_id":user_id, "text":teksti, "stars":stars})
     db.session.commit()
+    sql = "SELECT stars FROM reviews WHERE restaurant_id=:id"
+    results = db.session.execute(text(sql), {"id":review_id}).fetchall()
+    for result in results:
+        lista.append(int(result[0]))
+    avg = sum(lista)/len(lista)
+    sql = 'UPDATE restaurants SET stars_average = :avg WHERE id = :id'
+    db.session.execute(text(sql), {"avg":avg, "id":review_id})
+    db.session.commit()
     return redirect("/etusivu")
+
+@app.route('/search', methods=['POST'])
+def search():
+    search_field = (request.form['search_field']).strip()
+    print(f'search field = {search_field}')
+    sql = "SELECT id, name, created_at, stars_average FROM restaurants WHERE LOWER(info) LIKE LOWER(:field) OR LOWER(name) LIKE LOWER(:field) ORDER BY id DESC"
+    result = db.session.execute(text(sql), {'field': f'%{search_field}%'})
+    restaurants = result.fetchall()
+    return render_template('search.html', field=search_field, restaurants=restaurants)
+
+@app.route('/ordered')
+def ordered():
+    sql = "SELECT id, name, created_at, stars_average FROM restaurants ORDER BY stars_average DESC"
+    result = db.session.execute(text(sql))
+    restaurants = result.fetchall()
+    return render_template("ordered.html", restaurants=restaurants)
+
 
 
 @app.route('/invalid')
@@ -82,15 +108,15 @@ def login():
     username = request.form["username"]
     password = request.form["password"]
     hash_pass = generate_password_hash(password)
-    sql = 'INSERT INTO users (name, password) VALUES (:name, :password)'
-    db.session.execute(text(sql), {'name':username, 'password':hash_pass})
-    db.session.commit()
     sql = "SELECT id, password FROM users WHERE name=:username"
     result = db.session.execute(text(sql), {"username":username})
     user = result.fetchone()    
     if not user:
-        return 'Invalid username'
-    
+        sql = 'INSERT INTO users (name, password) VALUES (:name, :password)'
+        db.session.execute(text(sql), {'name':username, 'password':hash_pass})
+        db.session.commit()
+        session["username"] = username
+        return redirect("/etusivu")
     else:
         hash_value = user.password
         if check_password_hash(hash_value, password):
