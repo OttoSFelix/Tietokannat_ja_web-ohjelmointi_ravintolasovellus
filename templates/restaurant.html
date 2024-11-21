@@ -1,0 +1,15 @@
+<h1><b>{{ name }}</b></h1>
+<hr>
+Description: "{{ info }}""
+<hr>
+Reviews:
+<br>
+{% for review in reviews %}
+<br>
+{{ review.name }}:
+<br>
+"{{ review.comment }}" | <i>{{ review.made_at.strftime("%Y-%m-%d %H:%M:%S") }}</i>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ review.stars * ('*') }} <br>
+<hr>
+{% endfor %}
+
+<a href="/etusivu">Go back</a>

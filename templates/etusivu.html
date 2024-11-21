@@ -1,0 +1,27 @@
+<title>Front page</title>
+{% if session.username %}
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<h1>Restaurant app</h1>
+<a href="/new">New restaurant</a>
+<form action="/search" method="POST">
+<input type="text" name="search_field">
+<input type="submit" value="Search"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="/ordered">Order from best rated to worst </a>
+</form>
+<hr>
+{% for restaurant in restaurants %}
+<b>{{ restaurant.name }}</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Avg stars:&nbsp{{ restaurant.stars_average }} *<br>
+Created at: {{ restaurant.created_at.strftime("%Y-%m-%d %H:%M:%S") }} <br>
+<a href="/restaurant/{{ restaurant.id }}">Restaurant information</a> |
+<a href="/review/{{ restaurant.id }}">Make a review</a> <br> 
+<hr>
+{% endfor %}
+<a href="/logout">Kirjaudu ulos</a>
+{% else %}
+<form action="/login" method="POST">
+<p>Tunnus:<br>
+<input type="text" name="username"></p>
+<p>Salasana:<br>
+<input type="password" name="password"></p>
+<input type="submit" value="Kirjaudu">
+</form>
+{% endif %}

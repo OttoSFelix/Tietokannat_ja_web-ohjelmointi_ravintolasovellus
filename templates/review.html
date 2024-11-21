@@ -1,0 +1,18 @@
+Review on {{ name }}
+<hr>
+<form action="/maker" method="POST">
+<input type="text" name="teksti">
+<br>
+Stars:
+<br>
+<input type="radio" name="stars" value={{ 1 }}> * <br>
+<input type="radio" name="stars" value={{ 2 }}> ** <br>
+<input type="radio" name="stars" value={{ 3 }}> *** <br>
+<input type="radio" name="stars" value={{ 4 }}> **** <br>
+<input type="radio" name="stars" value={{ 5 }}> ***** <br>
+<p>
+<input type="submit" value="Send review">
+<input type="hidden" name="id" value="{{ id }}">
+</form>
+<hr>
+<a href="/etusivu">Go back</a>

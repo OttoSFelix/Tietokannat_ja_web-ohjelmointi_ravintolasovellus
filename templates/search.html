@@ -1,0 +1,21 @@
+<title>Front page</title>
+<p>Olet kirjautunut nimellä {{ session.username }}</p>
+<h1>Restaurant app</h1>
+<a href="/new">New restaurant</a>
+<form action="/search" method="POST">
+<input type="text" name="search_field">
+<input type="submit" value="Search">
+</form>
+Searched for:&nbsp;"{{ field }}""
+<hr>
+{% for restaurant in restaurants %}
+<b>{{ restaurant.name }}</b> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Avg stars:&nbsp{{ restaurant.stars_average }} *<br>
+Created at: {{ restaurant.created_at.strftime("%Y-%m-%d %H:%M:%S") }} <br>
+<a href="/restaurant/{{ restaurant.id }}">Restaurant information</a> |
+<a href="/review/{{ restaurant.id }}">Make a review</a> <br> 
+<hr>
+{% endfor %}
+<a href="/etusivu">Go back</a>
+<br>
+<br>
+<a href="/logout">Kirjaudu ulos</a>
