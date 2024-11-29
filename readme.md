@@ -5,6 +5,7 @@ Seuraavaksi aktivoi virtuaaliympäristö ja asenna sovelluksen riippuvuudet seur
 $ python3 -m venv venv
 $ source venv/bin/activate
 $ pip install -r ./requirements.txt
+Luo app.py python tiedosto johon kopioit repositoriosta app.py tiedoston sisällön
 Sitten määrittele tietokannan rakenne komennolla:
 $ psql < schema.sql
 ja sovellus käynnistetään komennolla flask run
