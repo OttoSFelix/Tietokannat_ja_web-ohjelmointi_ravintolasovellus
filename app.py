@@ -44,7 +44,7 @@ def restaurant(id):
     sql = "SELECT info FROM restaurants WHERE id=:id"
     result = db.session.execute(text(sql), {"id":id})
     info = result.fetchone()
-    sql = "SELECT r.comment, r.made_at, r.stars, u.name FROM reviews r, users u WHERE u.id = r.user_id AND r.restaurant_id=:id"
+    sql = "SELECT r.id, r.comment, r.made_at, r.stars, u.name FROM reviews r, users u WHERE u.id = r.user_id AND r.restaurant_id=:id"
     result = db.session.execute(text(sql), {"id":id})
     reviews = result.fetchall()
     return render_template("restaurant.html", id=id, name=name, info=info[0], reviews=reviews)
@@ -95,6 +95,24 @@ def ordered():
     restaurants = result.fetchall()
     return render_template("ordered.html", restaurants=restaurants)
 
+@app.route('/d_review', methods=['POST'])
+def d_review():
+    lista = []
+    review_id = request.form['rev_id']
+    restaurant_id = request.form['res_id']
+    sql = 'DELETE FROM reviews WHERE id=:id'
+    db.session.execute(text(sql), {'id':review_id})
+    db.session.commit()
+    print('tähän päästiin')
+    sql = "SELECT stars FROM reviews WHERE restaurant_id=:id"
+    results = db.session.execute(text(sql), {"id":restaurant_id}).fetchall()
+    for result in results:
+        lista.append(int(result[0]))
+    avg = sum(lista)/len(lista)
+    sql = 'UPDATE restaurants SET stars_average = :avg WHERE id = :id'
+    db.session.execute(text(sql), {"avg":avg, "id":restaurant_id})
+    db.session.commit()
+    return redirect('/etusivu')
 
 
 @app.route('/invalid')

@@ -9,6 +9,11 @@ Reviews:
 {{ review.name }}:
 <br>
 "{{ review.comment }}" | <i>{{ review.made_at.strftime("%Y-%m-%d %H:%M:%S") }}</i>   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{ review.stars * ('*') }} <br>
+<form action="/d_review" method="POST">
+<input type="hidden" name="res_id" value="{{ id }}">
+<input type="hidden" name="rev_id" value="{{ review.id }}">
+<input type="submit" value="Delete review">
+</form>
 <hr>
 {% endfor %}
 
