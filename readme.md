@@ -21,3 +21,4 @@ Luon ravintolasovelluksen, jossa näkyy lista ravintoloista. Ravintoloista voi n
 - Käyttäjä näkee myös listan, jossa ravintolat on järjestetty parhaimmasta huonoimpaan arvioiden (tähdet) mukaisesti.
 - Ylläpitäjä voi tarvittaessa poistaa käyttäjän antaman arvion.
 - #Ylläpitäjä voi luoda ryhmiä, joihin ravintoloita voi luokitella. Ravintola voi kuulua yhteen tai useampaan ryhmään.
+- Tällä hetkellä ei ole eroa ylläpitäjällä ja "normaalilla" käyttäjällä
