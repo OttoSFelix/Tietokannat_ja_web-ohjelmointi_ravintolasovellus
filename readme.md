@@ -11,7 +11,8 @@ $ psql < schema.sql
 ja sovellus käynnistetään komennolla flask run
 
 
-Kaikki joiden edessä on # ei ole vielä toimivia 
+Kaikki joiden edessä on # ei ole vielä toimivia.
+
 Luon ravintolasovelluksen, jossa näkyy lista ravintoloista. Ravintoloista voi nähdä tietoa ja lukea arvioita. Jokainen käyttäjä on joko peruskäyttäjä tai ylläpitäjä.
 - Käyttäjä voi kirjautua sisään ja ulos sekä luoda uuden tunnuksen.
 - Käyttäjä näkee listan ravintoloista ja voi painaa ravintolasta, jolloin siitä näytetään lisää tietoa (kuten kuvaus, arviot ja aukioloajat).
